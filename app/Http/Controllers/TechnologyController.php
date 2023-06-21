@@ -14,7 +14,9 @@ class TechnologyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {$technologies = Technology::all();
+
+        return view('admin.technologies.index', compact('technologies'));
 
     }
 
@@ -36,7 +38,12 @@ class TechnologyController extends Controller
      */
     public function store(StoreTechnologyRequest $request)
     {
-        //
+        $val_data = $request->validated();
+        $val_data['slug'] = Str::slug($request->name);
+
+        Technology::create($val_data);
+
+        return to_route('admin.technologies.index')->with('message', 'Technology Created Successfully');
     }
 
     /**
@@ -70,7 +77,13 @@ class TechnologyController extends Controller
      */
     public function update(UpdateTechnologyRequest $request, Technology $technology)
     {
-        //
+        $val_data = $request->validated();
+
+        $val_data['slug'] = Str::slug($request->name);
+
+        $technology->update($val_data);
+
+        return to_route('admin.technologies.index')->with('message', 'Technology Updated Successfully');
     }
 
     /**
@@ -81,6 +94,8 @@ class TechnologyController extends Controller
      */
     public function destroy(Technology $technology)
     {
-        //
+        $technology->delete();
+
+        return to_route('admin.technologies.index')->with('message', 'Technology Deleted Successfully');
     }
 }

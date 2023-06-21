@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Technology extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'slug'];
+
+    /**
+     * Get all of the posts for the Category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
 }
